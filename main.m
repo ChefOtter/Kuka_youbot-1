@@ -26,7 +26,20 @@ end
 
 %traj
 
-passivity_normal(traj, tf);
+torque = passivity_normal(traj, tf);
+plot(torque(1,:), 'LineWidth', 5);
+hold on
+grid on
+plot(torque(2,:), 'LineWidth', 5);
+plot(torque(3,:), 'LineWidth', 5);
+plot(torque(4,:), 'LineWidth', 5);
+plot(torque(5,:), 'LineWidth', 5);
+legend('Link 1 Torque', 'Link 2 Torque', 'Link 3 Torque', 'Link 4 Torque', 'Link 5 Torque');
+
+% open_system('youBot'); %open simulation file
+% sim('youBot', 'StopTime', 'length(t)');
+
+% trqe = [t', torque'];
 %inverse_dynamics(traj, tf);
 % % Generate Trajectories for Plot
 % coeff = [];

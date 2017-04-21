@@ -1,4 +1,4 @@
-function [] = passivity_normal(trajectory, tf )
+function [torque] = passivity_normal(trajectory, tf )
 %Passivity Based Control for Ideal Dynamics
 % tau = M*a + C*v + N - Kr
 % r = de + lambda*e
