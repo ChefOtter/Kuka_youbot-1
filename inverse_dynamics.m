@@ -1,4 +1,4 @@
-function [] = passivity_normal(trajectory, tf )
+function [] = inverse_dynamics(trajectory, tf )
 %Passivity Based Control for Ideal Dynamics
 % tau = M*a + C*v + N - Kr
 % r = de + lambda*e
@@ -27,10 +27,12 @@ title('Theta_2 under Robust Control');
 function [dx ] = planarArmODEUncertain(t,x)
     disp('In ODE...')
     K = 10*eye(5);
+    Kp = 10*eye(5);
+    Kd = 2*eye(5);
     lambda = 10*eye(5);
     vec_t = [1; t; t^2; t^3]; % cubic polynomials
     theta_d= [trajectory(1,:)*vec_t; trajectory(2,:)*vec_t; trajectory(3,:)*vec_t; trajectory(4,:)*vec_t; trajectory(5,:)*vec_t]; % chnaged transpose
-    %theta_d
+    theta_d
     
     % Joint 1 Velcoity and Acceleration
     a1_vel = [trajectory(1,2), 2*trajectory(1,3), 3*trajectory(1,4), 0];
@@ -62,19 +64,19 @@ function [dx ] = planarArmODEUncertain(t,x)
     theta= x(1:5,1);
     dtheta= x(6:10,1);
     
-    %dtheta
+    dtheta
     %Get Errors
     e = theta - theta_d;
     de = dtheta - dtheta_d;
     error = [e;de];
     
     %Get Passivity Parameters
-    r = de + lambda*e;
-    v = dtheta_d - lambda*e;
-    a = ddtheta_d - lambda*de;
+    %r = de + lambda*e;
+    %v = dtheta_d - lambda*e;
+    %a = ddtheta_d - lambda*de;
     
-    %theta
-    %dtheta
+    theta
+    dtheta
     
     %Get Dynamic Parameters
     M = getM(theta);
@@ -82,13 +84,13 @@ function [dx ] = planarArmODEUncertain(t,x)
     N = get_N(theta);
     
     % Get Input
-    tau = M*a + C*v + N - K*r;
-    tau
+    %tau = M*a + C*v + N - K*r;
+    tau = M*(-Kp*e -Kd*de) + C*dtheta + N;
     
     % Add torque to Torque List
     torque =[torque, tau];
     
-    dx = zeros(10,1);
+    dx = zeros(8,1);
     
     dx(1:5) = x(6:10);
     dx(6:10) = inv(M)*(tau - N - C*x(6:10));

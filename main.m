@@ -1,28 +1,55 @@
 clc
 clear all
 close all
-%x=[q1,q2,q3,q4,dq1,dq2,dq3,dq4]
-x_0=rand(8,1);
-x_f=rand(8,1);
+%x=[q1,q2,q3,q4,q5,dq1,dq2,dq3,dq4,dq5]
+x_0=rand(10,1);
+x_0(1)= 0;
+x_0(5) = 0;
+x_0(6) = 0;
+x_0(10) = 0;
+
+x_f=rand(10,1);
+x_f(1)= 0;
+x_f(5) = 0;
+x_f(6) = 0;
+x_f(10) = 0;
 %robustControl(x_0,x_f)
 tf = 2;
 
-% Generate Trajectories
-coeff = [];
+% Generate Trajectory for control
+traj = [];
 j = 1;
-for i=1:4
-    coeff = [coeff;generateTrajectory(x_0(j:j+1),x_f(j:j+1), tf)'];
-    j = j + 2;
-end
-theta_d=[];
-for t=0:0.01:tf
-    vec_t = [1; t; t^2; t^3]; % cubic polynomials
-    theta_d= [theta_d, [coeff(1,:)*vec_t; coeff(2,:)*vec_t; coeff(3,:)*vec_t; coeff(4,:)*vec_t;]];
+for i=1:5
+    traj = [traj;generateTrajectory([x_0(j); x_0(j+5)],[x_f(j); x_f(j+5)], tf)'];
+    j = j+1;
 end
 
-for j = 1:size(theta_d,2)
-    ee_pose = forwardKin([0;theta_d(:,j)]);
-    position(:,j) = ee_pose(1:3,4);
-end
-plot3(position(1,:),position(2,:),position(3,:),'-r')
-    % passivity_normal(traj, tf);
+%traj
+
+passivity_normal(traj, tf);
+%inverse_dynamics(traj, tf);
+% % Generate Trajectories for Plot
+% coeff = [];
+% j = 1;
+% for i=1:4
+%     coeff = [coeff;generateTrajectory(x_0(j:j+1),x_f(j:j+1), tf)'];
+%     j = j + 2;
+% end
+% 
+% 
+% 
+% coeff
+% theta_d=[];
+% for t=0:0.01:tf
+%     vec_t = [1; t; t^2; t^3]; % cubic polynomials
+%     theta_d= [theta_d, [coeff(1,:)*vec_t; coeff(2,:)*vec_t; coeff(3,:)*vec_t; coeff(4,:)*vec_t;]];
+% end
+% 
+% for j = 1:size(theta_d,2)
+%     ee_pose = forwardKin([0;theta_d(:,j)]);
+%     position(:,j) = ee_pose(1:3,4);
+% end
+% figure
+% plot3(position(1,:),position(2,:),position(3,:),'-r')
+% title('Ideal Trajectory')
+% passivity_normal(traj, tf);

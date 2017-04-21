@@ -1,6 +1,7 @@
 function N = get_N(pos)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
+  pos(5) = 0;
 
   %double c_1 = cos(pos(1));
   c_2 = double(cos(pos(2)));

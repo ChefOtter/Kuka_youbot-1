@@ -1,6 +1,7 @@
 % get M
 function M=getM(pos)
   M = zeros(5,5);
+  pos(5) = 0;
   %double c_1 = cos(pos(1));
   c_2 = cos(pos(2));
   c_3 = cos(pos(3));
