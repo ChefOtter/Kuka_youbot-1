@@ -24,4 +24,5 @@ for j = 1:size(theta_d,2)
     ee_pose = forwardKin([0;theta_d(:,j)]);
     position(:,j) = ee_pose(1:3,4);
 end
+plot3(position(1,:),position(2,:),position(3,:),'-r')
     % passivity_normal(traj, tf);
