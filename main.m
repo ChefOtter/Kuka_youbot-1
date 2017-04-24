@@ -13,6 +13,7 @@ x_0(10) = 0;
 x_f=rand(10,1);
 x_f = [0.6596;
     0.5186;
+    
     0.9730;
     0.6490;
     0.8003;
@@ -47,7 +48,7 @@ end
 coeff = [];
 j = 1;
 for i=1:5
-    coeff = [coeff;generateTrajectory([x_0(j); x_0(j+5)],[x_f(j); x_f(j+5)], tf)'];
+    coeff = [coeff;generateTrajectory([x_0(j); x_0(j+1)],[x_f(j); x_f(j+5)], tf)'];
     j = j + 1;
 end
 
@@ -62,18 +63,23 @@ for j = 1:size(theta_d,2)
     position(:,j) = ee_pose(1:3,4);
 end
 figure
+az = 0;
+el = 0;
 plot3(position(1,:),position(2,:),position(3,:),'-r')
+view(az,el);
+grid on
 title('Ideal Trajectory')
 
-%% Plot Controller Cartesian Trajectory
+% Plot Controller Cartesian Trajectory
 figure;
-plot3(controller_position(1,:),controller_position(2,:),controller_position(3,:),'-r')
+plot(controller_position(1,:),controller_position(3,:),'-r')
 grid on
-axis('equal')
 title('Controller Cartesian Trajectory')
 
 %% Plot Torques
+figure
 plot(torque(1,:), 'LineWidth', 5);
+title('Joint Torques')
 hold on
 grid on
 plot(torque(2,:), 'LineWidth', 5);
@@ -82,11 +88,11 @@ plot(torque(4,:), 'LineWidth', 5);
 plot(torque(5,:), 'LineWidth', 5);
 legend('Link 1 Torque', 'Link 2 Torque', 'Link 3 Torque', 'Link 4 Torque', 'Link 5 Torque');
 
-
-
 %%
-% open_system('youBot'); %open simulation file
-% sim('youBot', 'StopTime', 'length(t)');
+t = linspace(1, 100, length(x))';
+cjt = [t, x(:,2:4)]; %controlled joint trajectory
+open_system('youBot'); %open simulation file
+sim('youBot', 'StopTime', '100');
 
 % trqe = [t', torque'];
 %inverse_dynamics(traj, tf);
