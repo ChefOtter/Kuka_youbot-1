@@ -27,12 +27,44 @@ options = odeset('RelTol',1e-4,'AbsTol',[1e-4, 1e-4, 1e-4, 1e-4, 1e-4, 1e-4, 1e-
 [T,X] = ode45(@(t,x)planarArmODEUncertain(t,x),[0 tf],x0e,options);
 
 figure('Name','theta1');
+plot(T, X(:,1),'r-');
+title('Under Control')
+hold on
+grid on
+plot(T, trajectory(1,1)+trajectory(1,2)*T+ trajectory(1,3)*T.^2+trajectory(1,4)*T.^3, 'b-');
+title('Theta_1 under Passivity Control');
+
+figure('Name','theta2');
 plot(T, X(:,2),'r-');
 title('Under Control')
 hold on
-
+grid on
 plot(T, trajectory(2,1)+trajectory(2,2)*T+ trajectory(2,3)*T.^2+trajectory(2,4)*T.^3, 'b-');
-title('Theta_2 under Robust Control');
+title('Theta_2 under Passivity Control');
+
+figure('Name','theta3');
+plot(T, X(:,3),'r-');
+title('Under Control')
+hold on
+grid on
+plot(T, trajectory(3,1)+trajectory(3,2)*T+ trajectory(3,3)*T.^2+trajectory(3,4)*T.^3, 'b-');
+title('Theta_3 under Passivity Control');
+
+figure('Name','theta4');
+plot(T, X(:,4),'r-');
+title('Under Control')
+hold on
+grid on
+plot(T, trajectory(4,1)+trajectory(4,2)*T+ trajectory(4,3)*T.^2+trajectory(4,4)*T.^3, 'b-');
+title('Theta_4 under Passivity Control');
+
+figure('Name','theta5');
+plot(T, X(:,5),'r-');
+title('Under Control')
+hold on
+grid on
+plot(T, trajectory(5,1)+trajectory(5,2)*T+ trajectory(5,3)*T.^2+trajectory(5,4)*T.^3, 'b-');
+title('Theta_5 under Passivity Control');
 
 function [dx ] = planarArmODEUncertain(t,x)
     %disp('In ODE...')
