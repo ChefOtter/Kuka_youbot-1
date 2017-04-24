@@ -7,7 +7,6 @@ M= [1 0 0 0;
     0 1 2*tf 3*tf^2];
 b=[x0;xf];
 a=M\b;
-a
 % t=0:0.01:tf;
 
 % figure('Name','Position (degree)');

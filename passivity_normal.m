@@ -1,4 +1,4 @@
-function [torque, X] = passivity_normal(trajectory, tf )
+function [torque, X] = passivity_normal(trajectory, tf , x0)
 %Passivity Based Control for Ideal Dynamics
 % tau = M*a + C*v + N - Kr
 % r = de + lambda*e
@@ -6,7 +6,17 @@ function [torque, X] = passivity_normal(trajectory, tf )
 % a = ddq = lambda*de
 
 %theta = [q1, q2, q3, q4, dq1, dq2, dq3, dq4]
-x0e=rand(10,1);
+x0e=x0 + 0.1*rand(10,1);
+x0e = [0.0033;
+    0.3186;
+    0.8892;
+    0.0961;
+    0.0190;
+    0.0369;
+    0.5347;
+    0.6767;
+    0.2529;
+    0.0856];
 x0e(1) = 0;
 x0e(5) = 0;
 x0e(6) = 0;
@@ -25,7 +35,7 @@ plot(T, trajectory(2,1)+trajectory(2,2)*T+ trajectory(2,3)*T.^2+trajectory(2,4)*
 title('Theta_2 under Robust Control');
 
 function [dx ] = planarArmODEUncertain(t,x)
-    disp('In ODE...')
+    %disp('In ODE...')
     K = 10*eye(5);
     lambda = 10*eye(5);
     vec_t = [1; t; t^2; t^3]; % cubic polynomials
@@ -83,7 +93,7 @@ function [dx ] = planarArmODEUncertain(t,x)
     
     % Get Input
     tau = M*a + C*v + N - K*r;
-    tau
+    
     
     % Add torque to Torque List
     torque =[torque, tau];
