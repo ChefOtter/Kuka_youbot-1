@@ -1,4 +1,4 @@
-function [] = inverse_dynamics(trajectory, tf )
+function [torque, X] = inverse_dynamics(trajectory, tf )
 %Passivity Based Control for Ideal Dynamics
 % tau = M*a + C*v + N - Kr
 % r = de + lambda*e
