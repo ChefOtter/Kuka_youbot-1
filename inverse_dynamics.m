@@ -7,6 +7,16 @@ function [] = inverse_dynamics(trajectory, tf )
 
 %theta = [q1, q2, q3, q4, dq1, dq2, dq3, dq4]
 x0e=rand(10,1);
+x0e = [0.0033;
+    0.3186;
+    0.8892;
+    0.0961;
+    0.0190;
+    0.0369;
+    0.5347;
+    0.6767;
+    0.2529;
+    0.0856];
 x0e(1) = 0;
 x0e(5) = 0;
 x0e(6) = 0;
@@ -25,14 +35,14 @@ plot(T, trajectory(2,1)+trajectory(2,2)*T+ trajectory(2,3)*T.^2+trajectory(2,4)*
 title('Theta_2 under Robust Control');
 
 function [dx ] = planarArmODEUncertain(t,x)
-    disp('In ODE...')
+    %disp('In ODE...')
     K = 10*eye(5);
     Kp = 10*eye(5);
     Kd = 2*eye(5);
     lambda = 10*eye(5);
     vec_t = [1; t; t^2; t^3]; % cubic polynomials
     theta_d= [trajectory(1,:)*vec_t; trajectory(2,:)*vec_t; trajectory(3,:)*vec_t; trajectory(4,:)*vec_t; trajectory(5,:)*vec_t]; % chnaged transpose
-    theta_d
+    
     
     % Joint 1 Velcoity and Acceleration
     a1_vel = [trajectory(1,2), 2*trajectory(1,3), 3*trajectory(1,4), 0];
@@ -64,7 +74,7 @@ function [dx ] = planarArmODEUncertain(t,x)
     theta= x(1:5,1);
     dtheta= x(6:10,1);
     
-    dtheta
+    
     %Get Errors
     e = theta - theta_d;
     de = dtheta - dtheta_d;
@@ -75,8 +85,7 @@ function [dx ] = planarArmODEUncertain(t,x)
     %v = dtheta_d - lambda*e;
     %a = ddtheta_d - lambda*de;
     
-    theta
-    dtheta
+    
     
     %Get Dynamic Parameters
     M = getM(theta);
