@@ -37,7 +37,8 @@ for i=1:5
     j = j+1;
 end
 
-[torque, x] = passivity_normal(traj, tf, x_0);
+% [torque, x] = passivity_normal(traj, tf, x_0);
+[torque, x] = inverse_dynamics(traj, tf, x_0);
 
 for j = 1:size(x,1)
     ee_pose = forwardKin(x(j,1:5));
@@ -78,14 +79,14 @@ title('Controller Cartesian Trajectory')
 
 %% Plot Torques
 figure
-plot(torque(1,:), 'LineWidth', 5);
+plot(torque(1,:), 'LineWidth', 3);
 title('Joint Torques')
 hold on
 grid on
-plot(torque(2,:), 'LineWidth', 5);
-plot(torque(3,:), 'LineWidth', 5);
-plot(torque(4,:), 'LineWidth', 5);
-plot(torque(5,:), 'LineWidth', 5);
+plot(torque(2,:), 'LineWidth', 3);
+plot(torque(3,:), 'LineWidth', 3);
+plot(torque(4,:), 'LineWidth', 3);
+plot(torque(5,:), 'LineWidth', 3);
 legend('Link 1 Torque', 'Link 2 Torque', 'Link 3 Torque', 'Link 4 Torque', 'Link 5 Torque');
 
 %%
